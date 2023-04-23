@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import "./App.css";
+
 
 const App = () => {
   const [counter, setCounter] = useState(0);
@@ -15,15 +15,18 @@ const App = () => {
   const reiniciarContador = () => setCounter(0);
   const volver = () => setCounter(counter - 1);
 
-  
   const MostrarContador = (props) => {
-    return <div className="contador-estado">{props.counter}</div>;
+    return <div>{props.counter}</div>;
   };
 
   const Boton = (props) => {
     return (
       <div>
-        <button className="boton" onClick={props.handleClick} onclick={props.volver}>
+        <button
+          
+          onClick={props.handleClick}
+          onclick={props.volver}
+        >
           {props.text}
         </button>
       </div>
@@ -31,13 +34,11 @@ const App = () => {
   };
 
   return (
-    <div className="contenedor-de-todo">
-      <MostrarContador counter={counter}  className="contador"/>
-      <div className="flex-contenedor">
+    <div>
+      <MostrarContador counter={counter} className="contador" />
       <Boton handleClick={reiniciarContador} text="Reiniciar" />
       <Boton handleClick={volver} text="Volver" />
       <Boton handleClick={aumentarContardor} text="Clic" />
-      </div>
     </div>
   );
 };

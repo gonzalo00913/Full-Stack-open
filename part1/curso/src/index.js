@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import "./app.css";
+
 
 const App = () => {
   const curso = {
@@ -73,7 +73,7 @@ const App = () => {
   };
 
   return (
-    <div className="color-fondo">
+    <div>
       <Cabezera curso={curso.name} />
       <Contenido />
       <Total partes={curso.partes} />
