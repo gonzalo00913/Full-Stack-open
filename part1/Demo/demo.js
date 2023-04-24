@@ -46,3 +46,6 @@ const handleLeftClick = () =>
   setClicks({
      ...clicks, 
      left: clicks.right + 1 })
+
+
+     
