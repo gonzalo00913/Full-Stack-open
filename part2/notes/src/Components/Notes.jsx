@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Notes = ({ note }) => {
-  return <li>{note.date}</li>
+  return <li>{note.content}</li>
 }
 
 export default Notes
