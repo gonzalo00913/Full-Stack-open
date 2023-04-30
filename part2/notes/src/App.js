@@ -1,50 +1,65 @@
-import Notes from "./Components/Notes";
-import React, { useState } from "react";
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import Notes from './Components/Notes'
 
-const App = ({ notes }) => {
-  const [note, setNote] = useState(notes);
-  const [newNote, setNewNote] = useState("a new note...");
-  const [showAll, setShowAll] = useState(true);
+const App = () => {
+  const [note, setNotes] = useState([])
+  const [newNote, setNewNote] = useState('')
+  const [showAll, setShowAll] = useState(false)
 
-  const addNotes = (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/notes')
+      .then(response => {
+        console.log('promise fulfilled')
+        setNotes(response.data)
+      })
+  }, [])
+  
+  console.log('render', note.length, 'notes')
+
+  const addNote = (event) => {
+    event.preventDefault()
     const noteObject = {
       content: newNote,
-      date: new Date().toISOString(),
-      important: Math.random() < 0.5,
+      important: Math.random() > 0.5,
       id: note.length + 1,
-    };
-    setNote(notes.concat(noteObject));
-    setNewNote("");
-  };
+    }
+
+    setNotes(note.concat(noteObject))
+    setNewNote('')
+  }
+
   const handleNoteChange = (event) => {
-    console.log(event.target.value);
-    setNewNote(event.target.value);
-  };
+    setNewNote(event.target.value)
+  }
+
   const notesToShow = showAll
-    ? notes
-    : notes.filter((note) => note.important === true);
+    ? note
+    : note.filter(note => note.important)
 
   return (
     <div>
       <h1>Notes</h1>
-
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? "important" : "all"}
+          show {showAll ? 'important' : 'all' }
         </button>
-      </div>
+      </div> 
       <ul>
-        {notesToShow.map((note) => (
-          <Notes key={note.id} note={note} />
-        ))}
+        <ul>
+          {notesToShow.map(note => 
+            <Notes key={note.id} note={note} />
+          )}
+        </ul>
       </ul>
-      <form onSubmit={addNotes}>
+      <form onSubmit={addNote}>
         <input value={newNote} onChange={handleNoteChange} />
         <button type="submit">save</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

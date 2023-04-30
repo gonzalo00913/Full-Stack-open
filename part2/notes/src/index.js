@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
-const notes = [
+
+/*  const notes = [
   {
     id: 1,
     content: 'HTML is easy',
@@ -22,9 +23,16 @@ const notes = [
     important: true,
   },
 
-]
+]  */
+
+/* axios.get('http://localhost:3001/notes')  Realiza una petición GET a la URL especificada
+  .then(response => {  Si la petición es exitosa, ejecuta esta función con la respuesta
+    const notes = response.data Almacena en una variable los datos de la respuesta
+    console.log(notes)  Imprime en consola los datos obtenidos
+  })
+ */
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App notes={notes}/>);
+root.render(<App />);
 
