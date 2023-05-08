@@ -8,7 +8,8 @@ function App() {
   const [selectedCountry, setSelectedCountry] = useState(null);
 
   useEffect(() => {
-    axios.get("https://restcountries.com/v3.1/all").then((response) => {
+    axios.get("https://restcountries.com/v3.1/all")
+      .then((response) => {
       setCountries(response.data);
     });
   }, []);
