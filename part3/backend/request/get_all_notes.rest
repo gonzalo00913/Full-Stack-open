@@ -1,11 +1,14 @@
 GET http://localhost:3001/api/notes/
 
 ###
-
+GET http://localhost:3001/notes
+###
+GET http://localhost:3001/
+###
 POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content":"hola mi nombre es gonzalo",
+    "content":"Cambios",
     "import":"true"
 }
