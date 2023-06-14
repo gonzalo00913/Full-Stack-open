@@ -19,29 +19,14 @@
       "important": true
     },
     {
-      "content": "POST is used to add data to REST api",
+      "content": "hola",
       "important": true,
       "id": 4
     },
     {
-      "content": "Homework",
-      "important": true,
-      "id": 5
-    },
-    {
-      "content": "terminar esta parte 2",
+      "content": "hola",
       "important": false,
-      "id": 6
-    },
-    {
-      "content": "Practicar mas las rutas",
-      "important": true,
-      "id": 7
-    },
-    {
-      "content": "Practicar mas las rutas",
-      "important": true,
-      "id": 8
+      "id": 5
     }
   ]
 }
