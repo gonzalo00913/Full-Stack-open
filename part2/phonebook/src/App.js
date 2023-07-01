@@ -1,13 +1,16 @@
 // Hay que refactorizar la app 
-
+import './App.css';
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [number, setNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [notification, setNotification] = useState(null);
+
 
   useEffect(() => {
     axios("http://localhost:3001/persons").then((res) => {
@@ -35,10 +38,9 @@ const App = () => {
             );
             setNewName("");
             setNumber("");
-          })
-          .catch((error) => {
-            console.error("Error al actualizar la persona:", error);
-            alert("Error al actualizar la persona. Por favor, inténtalo nuevamente.");
+          }).catch((error) => {
+            showNotification("Error al actualizar la persona:", error);
+            showNotification("Error al actualizar la persona. Por favor, inténtalo nuevamente.");
           });
       }
     } else {
@@ -52,10 +54,10 @@ const App = () => {
           setPersons(persons.concat(response.data));
           setNewName("");
           setNumber("");
-        })
-        .catch((error) => {
+          showNotification(`${response.data.name} added successfully.`);
+        }).catch((error) => {
           console.error("Error al agregar la persona:", error);
-          alert("Error al agregar la persona. Por favor, inténtalo nuevamente.");
+          showNotification("Error al agregar la persona. Por favor, inténtalo nuevamente.");
         });
     }
   };
@@ -72,11 +74,18 @@ const App = () => {
           
           })
           .catch((error) => {
-            console.error("Error al eliminar la persona:", error);
-            alert("Error al eliminar la persona. Por favor, inténtalo nuevamente.");
+            console.log("Error al eliminar la persona:", error);
+            showNotification("Error al eliminar la persona. Por favor, inténtalo nuevamente.");
           });
       }
     }
+  };
+
+  const showNotification = (message) => {
+    setNotification(message);
+    setTimeout(() => {
+      setNotification(null);
+    }, 5000);
   };
 
 
@@ -100,6 +109,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification}/>
       <div>
         Filter show with <input value={filter} onChange={handleFilterChange} />
       </div>
