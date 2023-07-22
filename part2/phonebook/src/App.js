@@ -13,12 +13,15 @@ const App = () => {
 
 
   useEffect(() => {
-    axios("http://localhost:3001/api/persons").then((res) => {
-      setPersons(res.data);
-    });
+    axios.get("http://localhost:3001/api/persons")
+      .then((res) => {
+        setPersons(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
-  // agrego una persona nueva, si la persona ya existe, recibe un alert para confirmar si quiere modificar a esa persona 
   const addName = (event) => {
     event.preventDefault();
     const existingPerson = persons.find((person) => person.name === newName);
@@ -60,15 +63,15 @@ const App = () => {
           showNotification("Error al agregar la persona. Por favor, inténtalo nuevamente.");
         });
     }
-  };
-  // Elimino a una persona de la lista
+  }; 
+
   const removePerson = (id) => {
     const person = persons.find((person) => person.id === id);
     if (person) {
       const ok = window.confirm(`Remove ${person.name} from phonebook?`);
       if (ok) {
         axios
-          .delete(`http://localhost:3001/delete/persons/${id}`)
+          .delete(`http://localhost:3001/delete/persons/name/${id}`)
           .then(() => {
             setPersons(persons.filter((p) => p.id !== id));
           
@@ -80,6 +83,7 @@ const App = () => {
       }
     }
   };
+
 
   const showNotification = (message) => {
     setNotification(message);
@@ -103,8 +107,8 @@ const App = () => {
   };
 
   const filteredPersons = persons.filter((person) =>
-    person.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  person.name && person.name.toLowerCase().includes(filter.toLowerCase())
+);
 
   return (
     <div className='container-phonebook'>
@@ -141,4 +145,6 @@ const App = () => {
 };
 
 export default App;
+
+
 
