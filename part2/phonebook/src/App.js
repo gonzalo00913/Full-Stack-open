@@ -1,5 +1,5 @@
-// Hay que refactorizar la app 
-import './App.css';
+// The app needs to be refactored
+import "./App.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Notification from "./components/Notification";
@@ -11,9 +11,9 @@ const App = () => {
   const [filter, setFilter] = useState("");
   const [notification, setNotification] = useState(null);
 
-
   useEffect(() => {
-    axios.get("http://localhost:3001/api/persons")
+    axios
+      .get("http://localhost:3001/api/persons")
       .then((res) => {
         setPersons(res.data);
       })
@@ -32,7 +32,10 @@ const App = () => {
       if (ok) {
         const updatedPerson = { ...existingPerson, number: number };
         axios
-          .put(`http://localhost:3001/persons/${existingPerson.id}`, updatedPerson)
+          .put(
+            `http://localhost:3001/api/persons/${existingPerson.id}`,
+            updatedPerson
+          )
           .then((response) => {
             setPersons(
               persons.map((person) =>
@@ -41,9 +44,12 @@ const App = () => {
             );
             setNewName("");
             setNumber("");
-          }).catch((error) => {
+          })
+          .catch((error) => {
             showNotification("Error al actualizar la persona:", error);
-            showNotification("Error al actualizar la persona. Por favor, inténtalo nuevamente.");
+            showNotification(
+              "Error al actualizar la persona. Por favor, inténtalo nuevamente."
+            );
           });
       }
     } else {
@@ -58,12 +64,15 @@ const App = () => {
           setNewName("");
           setNumber("");
           showNotification(`${response.data.name} added successfully.`);
-        }).catch((error) => {
+        })
+        .catch((error) => {
           console.error("Error al agregar la persona:", error);
-          showNotification("Error al agregar la persona. Por favor, inténtalo nuevamente.");
+          showNotification(
+            "Error al agregar la persona. Por favor, inténtalo nuevamente."
+          );
         });
     }
-  }; 
+  };
 
   const removePerson = (id) => {
     const person = persons.find((person) => person.id === id);
@@ -74,16 +83,16 @@ const App = () => {
           .delete(`http://localhost:3001/delete/persons/name/${id}`)
           .then(() => {
             setPersons(persons.filter((p) => p.id !== id));
-          
           })
           .catch((error) => {
             console.log("Error al eliminar la persona:", error);
-            showNotification("Error al eliminar la persona. Por favor, inténtalo nuevamente.");
+            showNotification(
+              "Error al eliminar la persona. Por favor, inténtalo nuevamente."
+            );
           });
       }
     }
   };
-
 
   const showNotification = (message) => {
     setNotification(message);
@@ -91,7 +100,6 @@ const App = () => {
       setNotification(null);
     }, 5000);
   };
-
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
@@ -106,14 +114,15 @@ const App = () => {
     setFilter(event.target.value);
   };
 
-  const filteredPersons = persons.filter((person) =>
-  person.name && person.name.toLowerCase().includes(filter.toLowerCase())
-);
+  const filteredPersons = persons.filter(
+    (person) =>
+      person.name && person.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
   return (
-    <div className='container-phonebook'>
-      <h2 >Phonebook</h2>
-      <Notification message={notification}/>
+    <div className="container-phonebook">
+      <h2>Phonebook</h2>
+      <Notification message={notification} />
       <div>
         Filter show with <input value={filter} onChange={handleFilterChange} />
       </div>
@@ -145,6 +154,3 @@ const App = () => {
 };
 
 export default App;
-
-
-
