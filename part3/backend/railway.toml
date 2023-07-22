@@ -1,5 +1,0 @@
-[env]
-RAILWAY_API_PORT = 3001
-
-[build]
-frontend = "npm run build"

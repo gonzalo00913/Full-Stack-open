@@ -13,7 +13,7 @@ const App = () => {
 
 
   useEffect(() => {
-    axios("http://localhost:3001/persons").then((res) => {
+    axios("http://localhost:3001/api/persons").then((res) => {
       setPersons(res.data);
     });
   }, []);
@@ -49,7 +49,7 @@ const App = () => {
         number: number,
       };
       axios
-        .post("http://localhost:3001/persons", nameObject)
+        .post("http://localhost:3001/api/persons", nameObject)
         .then((response) => {
           setPersons(persons.concat(response.data));
           setNewName("");
@@ -68,7 +68,7 @@ const App = () => {
       const ok = window.confirm(`Remove ${person.name} from phonebook?`);
       if (ok) {
         axios
-          .delete(`http://localhost:3001/persons/${id}`)
+          .delete(`http://localhost:3001/delete/persons/${id}`)
           .then(() => {
             setPersons(persons.filter((p) => p.id !== id));
           
@@ -107,8 +107,8 @@ const App = () => {
   );
 
   return (
-    <div>
-      <h2>Phonebook</h2>
+    <div className='container-phonebook'>
+      <h2 >Phonebook</h2>
       <Notification message={notification}/>
       <div>
         Filter show with <input value={filter} onChange={handleFilterChange} />

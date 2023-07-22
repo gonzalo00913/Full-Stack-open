@@ -1,12 +1,13 @@
 import '../App.css';
 
-const Notes = ({ note, toggleImportance }) => {
-  const label = note.important ? "make not important" : "make important";
+const Notes = ({ note, toggleImportance,deleteNote }) => {
+  const label = note.important ? "not important" : "important";
 
   return (
-    <div>
+    <div className='container-btn-import'>
       <li className="note">{note.content}</li>
-      <button onClick={toggleImportance}>{label}</button>
+      <button className='btn-label' onClick={toggleImportance}>{label}</button>
+      <button className="btn-delete" onClick={deleteNote}>Delete</button>
     </div>
   );
 };
