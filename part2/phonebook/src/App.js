@@ -66,9 +66,9 @@ const App = () => {
           showNotification(`${response.data.name} added successfully.`);
         })
         .catch((error) => {
-          console.error("Error al agregar la persona:", error);
+          console.log(error.response.data)
           showNotification(
-            "Error al agregar la persona. Por favor, inténtalo nuevamente."
+            "Error al agregar la persona. Por favor, asegúrate de que el nombre tenga al menos 3 letras y el número contenga exactamente 8 dígitos."
           );
         });
     }

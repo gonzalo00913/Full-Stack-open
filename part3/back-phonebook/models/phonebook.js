@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
-require("dotenv").config();
-const { password } = process.env;
+const mongoose = require('mongoose')
+require('dotenv').config()
+const { password } = process.env
 
-const uri = `mongodb+srv://gonzalomasa:${password}@phonebool-app.lmoabej.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://gonzalomasa:${password}@phonebool-app.lmoabej.mongodb.net/?retryWrites=true&w=majority`
 
 mongoose
   .connect(uri, {
@@ -10,15 +10,24 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("database connection");
+    console.log('database connection')
   })
   .catch((error) => {
-    console.error("Error database:", error);
-  });
+    console.error('Error database:', error)
+  })
 
- const phonebookSchema = new mongoose.Schema({
-    name: String,
-    number: Number,
+const phonebookSchema = new mongoose.Schema({
+  name:{
+    type:String,
+    unique: true,
+    minlength: 3, 
+    required: true,
+      
+  },
+  number:{
+    type: Number,
+    minlength: 8,
+  }
 })
 
 phonebookSchema.set('toJSON', {
@@ -30,4 +39,4 @@ phonebookSchema.set('toJSON', {
 })
 
 
-module.exports = mongoose.model("Phonebook",phonebookSchema )
+module.exports = mongoose.model('Phonebook',phonebookSchema )

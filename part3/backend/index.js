@@ -1,12 +1,11 @@
-const mongoose = require("mongoose");
-const Note = require("./models/notes")
-const express = require("express");
-const app = express();
-const morgan = require("morgan")
-const cors = require("cors")
+const Note = require('./models/notes')
+const express = require('express')
+const app = express()
+const morgan = require('morgan')
+const cors = require('cors')
 app.use(express.json())
 
-app.use(morgan("dev"))
+app.use(morgan('dev'))
 app.use(cors())
 
 // GET - Me traigo nota
@@ -17,7 +16,7 @@ app.get('/api/notes', (request, response) => {
 })
 
 // POST - Crear una nota
-app.post('/api/notes', (request, response) => {
+app.post('/api/notes', (request, response, next) => {
   const body = request.body
 
   if (body.content === undefined) {
@@ -32,7 +31,7 @@ app.post('/api/notes', (request, response) => {
 
   note.save().then(savedNote => {
     response.json(savedNote)
-  })
+  }).catch(error => next(error))
 })
 
 app.get('/api/notes/:id', (request, response, next) => {
@@ -49,32 +48,32 @@ app.get('/api/notes/:id', (request, response, next) => {
 
 // PUT - Actualizar una nota
 app.put('/api/notes/:id', (request, response, next) => {
-  const id = request.params.id;
-  const updatedNote = request.body;
+  const id = request.params.id
+  const updatedNote = request.body
 
   Note.findByIdAndUpdate(id, updatedNote, { new: true })
     .then(updatedNote => {
-      response.json(updatedNote);
+      response.json(updatedNote)
     })
-    .catch(error => next(error));
-});
+    .catch(error => next(error))
+})
 
 // DELETE - Eliminar una nota
 app.delete('/api/notes/:id', (request, response, next) => {
-  const id = request.params.id;
+  const id = request.params.id
 
   Note.findByIdAndDelete(id)
     .then(() => {
-      response.status(204).end();
+      response.status(204).end()
     })
-    .catch(error => next(error));
-});
+    .catch(error => next(error))
+})
 
 
-const PORT = 3001;
+const PORT = 3001
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  console.log(`Server running on port ${PORT}`)
+})
 
 
 /* app.get("/", (_request, response) => {
