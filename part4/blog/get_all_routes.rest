@@ -1,0 +1,13 @@
+GET http://localhost:3001/api/blogs
+
+####
+
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "Title":"Probando el blog",
+    "author":"Gonzalo Masa",
+    "url":"www.blog.com.ar",
+    "likes": 5
+}

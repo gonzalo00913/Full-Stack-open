@@ -1,20 +1,7 @@
 const mongoose = require('mongoose')
-require('dotenv').config()
-const {password} = process.env
 
-const uri = `mongodb+srv://gonzalo-masa:${password}@cluster0.zbty2ac.mongodb.net/app-notes?retryWrites=true&w=majority`
 
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => {
-    console.log('database connection')
 
-  })
-  .catch((error) => {
-    console.error('Error database:', error)
-  })
 
 const noteSchema = new mongoose.Schema({
   content: {
