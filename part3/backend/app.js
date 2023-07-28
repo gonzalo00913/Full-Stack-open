@@ -1,15 +1,15 @@
 const express = require("express");
+const config = require("./utils/config")
 const notesRouter = require('../backend/controllers/notes')
 const server = express();
 const mongoose = require('mongoose')
 const cors = require('cors')
 const morgan = require('morgan')
 require('dotenv').config()
-const {password} = process.env
 
-const uri = `mongodb+srv://gonzalo-masa:${password}@cluster0.zbty2ac.mongodb.net/app-notes?retryWrites=true&w=majority`
 
-mongoose.connect(uri, {
+
+mongoose.connect(config.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
