@@ -1,4 +1,5 @@
 const express = require("express");
+require('express-async-errors')
 const config = require("./utils/config")
 const notesRouter = require('../backend/controllers/notes')
 const server = express();
@@ -6,7 +7,6 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const morgan = require('morgan')
 require('dotenv').config()
-
 
 
 mongoose.connect(config.MONGO_URI, {
