@@ -1,5 +1,7 @@
 const blogRouter = require("express").Router();
 const Blog = require("../models/Blog");
+const User = require("../models/Users")
+require('dotenv').config()
 
 // GET - Me traigo los blogs
 blogRouter.get("/", async (request, response) => {
@@ -30,6 +32,7 @@ blogRouter.get("/:id", async (request, response, next) => {
 // GET - Posteo blogs
 blogRouter.post("/", async (request, response) => {
   const blogData = request.body;
+  
 
   if (!blogData.title || !blogData.url) {
     response.status(400).json({ error: "Falta la propiedad title o url" });
@@ -37,8 +40,23 @@ blogRouter.post("/", async (request, response) => {
   }
 
   try {
-    const blog = new Blog(blogData);
+    const user = await User.findById(blogData.userId); 
+    if (!user) {
+      response.status(404).json({ error: "Usuario no encontrado" });
+      return;
+    }
+
+    const blog = new Blog({
+      title: blogData.title,
+      url: blogData.url,
+      author: blogData.author,
+      user: user._id, 
+    });
+
     const result = await blog.save();
+    user.blogs = user.blogs.concat(result._id); 
+    await user.save();
+
     response.status(201).json(result);
   } catch (error) {
     console.error("Se produjo un error:", error);
