@@ -1,7 +1,7 @@
 const blogRouter = require("express").Router();
 const Blog = require("../models/Blog");
 const User = require("../models/Users");
-const authenticateToken = require("../utils/middleware");
+const { authenticateToken } = require("../utils/middleware");
 require("dotenv").config();
 
 // GET - Me traigo los blogs
