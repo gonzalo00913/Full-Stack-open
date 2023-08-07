@@ -1,6 +1,6 @@
-const dummy = require('../utils/list_helper').dummy;
+const dummy = require("../utils/list_helper").dummy;
 
-test('dummy returns one', () => {
+test("dummy returns one", () => {
   const blogs = [];
   expect(dummy(blogs)).toBe(1);
 });
