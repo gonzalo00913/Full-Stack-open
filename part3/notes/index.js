@@ -15,6 +15,7 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'La ruta no existe' })
 }
 
+app.use(express.static('build'))
 app.use(express.json())
 app.use(requestLogger)
 app.use(cors())
