@@ -80,7 +80,7 @@ const App = () => {
       const ok = window.confirm(`Remove ${person.name} from phonebook?`);
       if (ok) {
         axios
-          .delete(`http://localhost:3001/delete/persons/name/${id}`)
+          .delete(`http://localhost:3001/api/persons/${id}`)
           .then(() => {
             setPersons(persons.filter((p) => p.id !== id));
           })

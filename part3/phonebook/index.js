@@ -1,36 +1,28 @@
+require("dotenv").config();
+const Phonebook = require("./models/phonebook");
 const express = require("express");
+const cors = require("cors");
 const app = express();
-app.use(express.json());
-const morgan = require("morgan")
 
+app.use(express.json());
+const morgan = require("morgan");
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'La ruta no existe' })
-}
+  response.status(404).send({ error: "La ruta no existe" });
+};
 
-app.use(express.json())
-app.use(morgan('method :method url :url status :status res :res[content-length] - time res :response-time ms'))
-
-let persons = [
-  {
-    id: 1,
-    name: "Gonzalo",
-    number: "22156134536",
-  },
-  {
-    id: 2,
-    name: "Ezequiel",
-    number: "22152561326",
-  },
-  {
-    id: 3,
-    name: "Luis",
-    number: "088156134536",
-  },
-];
+app.use(express.json());
+app.use(
+  morgan(
+    "method :method url :url status :status res :res[content-length] - time res :response-time ms"
+  )
+);
+app.use(cors());
 
 app.get("/api/persons", (_request, response) => {
-  response.json(persons);
+  Phonebook.find({}).then((person) => {
+    response.json(person);
+  });
 });
 
 app.get("/info", (_request, response) => {
@@ -46,54 +38,56 @@ app.get("/info", (_request, response) => {
 
 app.get("/api/persons/:id", (request, response) => {
   const id = request.params.id;
-  const person = persons.find((person) => person.id === Number(id));
+  const person = Phonebook.findById(id);
 
-  if (!person) {
-    response.status(400).json({error:"El id no existe"});
+  if (!id) {
+    response.status(400).json({ error: "El id no existe" });
   }
+  
   response.status(200).json(person);
 });
 
-app.delete("/api/persons/:id", (request, response) => {
-  const id = request.params.id;
-  persons = persons.filter((person) => person.id !== Number(id));
-
-  response.status(204).end();
+app.delete("/api/persons/:id", (request, response, next) => {
+  Phonebook.findByIdAndRemove(request.params.id)
+  .then(result =>{
+    response.status(204).end()
+  }).catch(error => next(error))
 });
-
-const generateId = () => {
-  const maxId = persons.length > 0 ? Math.max(...persons.map((n) => n.id)) : 0;
-  return maxId + 1;
-};
 
 app.post("/api/persons", (request, response) => {
   const body = request.body;
 
-  const phone = {
-    name: body.name,
-    number: body.number,
-    id: generateId(),
-  };
   if (body.name === "" || body.number === "") {
-    response.status(400).json({error:"Los campos estan vacios"});
+    response.status(400).json({ error: "Los campos estan vacios" });
   }
 
-  const isDuplicateName = persons.some((person) => person.name === body.name);
+  const phone = new Phonebook (
+    {
+      name: body.name,
+      number: body.number,
+    }
+  )
 
-  if (isDuplicateName) {
-    return response
-      .status(400)
-      .json({ error: "El nombre ya existe en la agenda" });
-  }
-
-  persons = persons.concat(phone);
-
-  response.status(201).json(phone);
+  phone.save().then(savePhone =>{
+    response.json(savePhone)
+  })
 });
 
-app.use(unknownEndpoint)
+app.use(unknownEndpoint);
 
-const PORT = 3001;
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+app.use(errorHandler)
+
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(`servidor iniciado en el puerto ${PORT}`);
