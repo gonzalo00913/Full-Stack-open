@@ -43,49 +43,50 @@ app.get("/api/persons/:id", (request, response) => {
   if (!id) {
     response.status(400).json({ error: "El id no existe" });
   }
-  
+
   response.status(200).json(person);
 });
 
 app.delete("/api/persons/:id", (request, response, next) => {
   Phonebook.findByIdAndRemove(request.params.id)
-  .then(result =>{
-    response.status(204).end()
-  }).catch(error => next(error))
+    .then((result) => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
 });
 
-app.post("/api/persons", (request, response) => {
+app.post("/api/persons", (request, response, next) => {
   const body = request.body;
 
-  if (body.name === "" || body.number === "") {
-    response.status(400).json({ error: "Los campos estan vacios" });
-  }
+  const phone = new Phonebook({
+    name: body.name,
+    number: body.number,
+  });
 
-  const phone = new Phonebook (
-    {
-      name: body.name,
-      number: body.number,
-    }
-  )
-
-  phone.save().then(savePhone =>{
-    response.json(savePhone)
-  })
+  phone
+    .save()
+    .then((savedPhone) => {
+      response.json(savedPhone);
+    })
+    .catch(error => next(error))
 });
 
 app.use(unknownEndpoint);
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+  console.error(error.message);
 
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } 
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }else if (error.name === 'ValidationError'){
+    return response.status(400).json({error: error.message})
+  }
 
-  next(error)
-}
+  next(error);
+};
 
-app.use(errorHandler)
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 
