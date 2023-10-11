@@ -1,9 +1,8 @@
 const config = require('./utils/config')
-const logger = require('./utils/logger')
 const express = require('express')
+const logger = require('./utils/logger')
 const app = express()
 const middleware = require('./utils/middleware')
-const blogRouter = require('./controllers/blog')
 const mongoose = require('mongoose')
 
 logger.info('conectado a ', config.MONGODB_URI)
@@ -17,7 +16,16 @@ mongoose.connect(config.MONGODB_URI)
 })
 
 app.use(express.json())
+app.use(middleware.tokenExtractor)
+
+const blogRouter = require('./controllers/blog')
+const userRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
+
 app.use('/api/blog', blogRouter)
+app.use('/api/blog/users', userRouter)
+app.use('/api/blog/login', loginRouter)
 
 app.use(middleware.errorHandler)
+
 module.exports = app;
