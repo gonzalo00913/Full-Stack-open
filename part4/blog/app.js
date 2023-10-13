@@ -18,11 +18,12 @@ mongoose.connect(config.MONGODB_URI)
 app.use(express.json())
 app.use(middleware.tokenExtractor)
 
+
 const blogRouter = require('./controllers/blog')
 const userRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 
-app.use('/api/blog', blogRouter)
+app.use('/api/blog', middleware.userExtractor, blogRouter)
 app.use('/api/blog/users', userRouter)
 app.use('/api/blog/login', loginRouter)
 

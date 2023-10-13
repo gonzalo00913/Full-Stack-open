@@ -12,12 +12,13 @@ blogRouter.get("/", async (request, response) => {
 
 blogRouter.post("/", async (request, response, next) => {
   const body = request.body;
+  const user = request.user;
 
   const decodedToken = jwt.verify(request.token, process.env.SECRET);
   if (!request.token || !decodedToken.id) {
     return response.status(401).json({ error: "token missing or invalid" });
   }
-  const user = await User.findById(decodedToken.id);
+/*   const user = await User.findById(decodedToken.id); */
 
   const blog = new Blog({
     title: body.title,
@@ -37,13 +38,31 @@ blogRouter.post("/", async (request, response, next) => {
   }
 });
 
+
 blogRouter.delete("/:id", async (request, response, next) => {
   const id = request.params.id;
-  try {
+  
+  const user = request.user;
+  // Verifica que el usuario esté autenticado
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'Token missing or invalid' });
+  }
+
+  // Busca el blog por su ID
+  const blog = await Blog.findById(id);
+
+  // Verifica si el blog existe
+  if (!blog) {
+    return response.status(404).json({ error: 'Blog not found' });
+  }
+
+  // Comprueba si el usuario que envía la solicitud es el creador del blog
+  if (blog.user.toString() === decodedToken.id) {
     await Blog.findByIdAndRemove(id);
     response.status(204).end();
-  } catch (error) {
-    error(next);
+  } else {
+    response.status(403).json({ error: 'Permission denied' });
   }
 });
 
