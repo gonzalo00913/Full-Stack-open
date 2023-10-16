@@ -1,4 +1,5 @@
 const config = require('./utils/config')
+const cors = require('cors')
 const express = require('express')
 const logger = require('./utils/logger')
 const app = express()
@@ -15,6 +16,8 @@ mongoose.connect(config.MONGODB_URI)
     console.log('error la conectarse a la base de datos');
 })
 
+app.use(cors())
+
 app.use(express.json())
 app.use(middleware.tokenExtractor)
 
@@ -23,7 +26,7 @@ const blogRouter = require('./controllers/blog')
 const userRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 
-app.use('/api/blog', middleware.userExtractor, blogRouter)
+app.use('/api/blog', blogRouter)
 app.use('/api/blog/users', userRouter)
 app.use('/api/blog/login', loginRouter)
 
