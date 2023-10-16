@@ -2,15 +2,17 @@ import React from 'react'
 import '../index.css'
 
 const Notification = ({ message }) => {
-    if (message === null) {
-      return null
-    }
-  
-    return (
-      <div className="error">
-        {message}
-      </div>
-    )
+  if (message === null) {
+    return null;
   }
 
-export default Notification
+  const notificationClassName = message.includes("Error") ? "error" : "addPerson";
+
+  return (
+    <div className={notificationClassName}>
+      {message}
+    </div>
+  );
+}
+
+export default Notification;
