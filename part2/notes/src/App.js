@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Note from './components/Notes'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
+import LoginForm from './components/loginForm'
 import noteService from './service/notes'
 import loginService from './service/login'
 
@@ -10,10 +11,10 @@ const App = () => {
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
-
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [loginVisible, setLoginVisible] = useState(false)
 
 
   useEffect(() => {
@@ -97,7 +98,7 @@ const App = () => {
         })
     }
 
-  const loginForm = () => (
+/*   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
         username
@@ -120,6 +121,30 @@ const App = () => {
       <button type="submit">login</button>
     </form>      
   )
+ */
+
+  const loginForm = () => {
+    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
+    const showWhenVisible = { display: loginVisible ? '' : 'none' }
+
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setLoginVisible(true)}>log in</button>
+        </div>
+        <div style={showWhenVisible}>
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}
+          />
+          <button onClick={() => setLoginVisible(false)}>cancel</button>
+        </div>
+      </div>
+    )
+  }
   
   const noteForm = () => (
     <form onSubmit={addNote}>
