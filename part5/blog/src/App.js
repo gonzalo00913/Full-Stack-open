@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Notification from "./components/Notification";
 import Blog from "./components/Blog";
 import BlogForm from "./components/BlogForm";
@@ -33,7 +33,6 @@ function App() {
       .create(blogObject)
       .then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog));
-
         showNotification(`New blog added: ${returnedBlog.title}`);
       })
       .catch((error) => {
@@ -69,6 +68,20 @@ function App() {
     showNotification("Logged out successfully");
   };
 
+  const handleLike = async (blog) => {
+    const updatedLikes = blog.likes + 1;
+    try {
+      const updatedBlog = await blogService.updateLikes(blog.id, updatedLikes);
+     
+      setBlogs((prevBlogs) =>
+        prevBlogs.map((b) => (b.id === updatedBlog.id ? updatedBlog : b))
+      );
+    } catch (error) {
+      console.error("Error al actualizar los likes:", error);
+    }
+  };
+  
+
   const showNotification = (message) => {
     setNotification(message);
     setTimeout(() => {
@@ -89,8 +102,9 @@ function App() {
           <Togglable buttonLabel="new blog">
             <BlogForm createBlog={addBlog} />
           </Togglable>
+
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} handleLike={handleLike}/>
           ))}
         </div>
       ) : (
