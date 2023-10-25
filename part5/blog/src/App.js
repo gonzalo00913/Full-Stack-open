@@ -80,6 +80,29 @@ function App() {
       console.error("Error al actualizar los likes:", error);
     }
   };
+
+  const handleDeleteBlog = async (blogToDelete) => {
+    if (window.confirm(`Do you really want to remove the blog "${blogToDelete.title}"?`)) {
+      console.log("que ondaaa", blogToDelete.title);
+      try {
+        await blogService.deleteBlog(blogToDelete.id);
+  
+        // Actualiza la lista de blogs eliminando el blog
+        setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== blogToDelete.id));
+        showNotification(`Blog "${blogToDelete.title}" has been deleted.`);
+      } catch (error) {
+        console.error("Error deleting the blog:", error);
+        setErrorMessage("Failed to delete the blog");
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+      }
+    }
+  };
+  
+
+  const sortedBlogs = [...blogs];
+  sortedBlogs.sort((a, b) => b.likes - a.likes);
   
 
   const showNotification = (message) => {
@@ -103,8 +126,8 @@ function App() {
             <BlogForm createBlog={addBlog} />
           </Togglable>
 
-          {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} handleLike={handleLike}/>
+          {sortedBlogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDeleteBlog={() => handleDeleteBlog(blog)}/>
           ))}
         </div>
       ) : (
