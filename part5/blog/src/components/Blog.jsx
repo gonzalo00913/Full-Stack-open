@@ -17,8 +17,8 @@ const Blog = ({blog, handleLike, handleDeleteBlog}) => {
         <p>{blog.author}</p>
         </div>
         <Togglable buttonLabel="view">
-          <p>{blog.url}</p>
-          <p>Likes:{blog.likes}</p>
+          <p className="blog-url">{blog.url}</p>
+          <p className="blog-likes">Likes:{blog.likes}</p>
           <button onClick={() => handleLike(blog)}>Like</button>
      
         </Togglable>
