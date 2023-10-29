@@ -39,4 +39,16 @@ describe("Blog Component", () => {
     expect(urlElementAfterClick).toBeDefined();
     expect(likesElementAfterClick).toBeDefined();
   });
+
+  it("verifica que se llama dos veces al controlador de eventos cuando se hace clic dos veces en el botón 'Like'", () => {
+    const handleLike = jest.fn();
+
+    const component = render(<Blog blog={blog} handleLike={handleLike} />);
+    
+    const likeButton = component.getByText("Like");
+    fireEvent.click(likeButton);
+    fireEvent.click(likeButton);
+
+    expect(handleLike).toHaveBeenCalledTimes(2);
+  });
 });
