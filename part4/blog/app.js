@@ -25,10 +25,12 @@ app.use(middleware.tokenExtractor)
 const blogRouter = require('./controllers/blog')
 const userRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
+const testingRouter = require('./controllers/testing') 
 
 app.use('/api/blog', blogRouter)
 app.use('/api/blog/users', userRouter)
 app.use('/api/blog/login', loginRouter)
+app.use('/api/testing/reset', testingRouter)
 
 app.use(middleware.errorHandler)
 
