@@ -1,20 +1,45 @@
 import './App.css';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { createStore } from 'redux'
+
+const counterReducer = (state = 0, action) => {
+  switch (action.type) {
+    case 'INCREMENT':
+      return state + 1
+    case 'DECREMENT':
+      return state - 1
+    case 'ZERO':
+      return 0
+    default:
+      return state
+  }
+}
+
+const store = createStore(counterReducer)
 
 const App = () => {
-  const count = useSelector(state => state);
-
-  const dispatch = useDispatch();
-
   return (
-    <div className='App'>
-      <div>{count}</div>
-      <button onClick={() => dispatch({ type: 'INCREMENT' })}>plus</button>
-      <button onClick={() => dispatch({ type: 'DECREMENT' })}>minus</button>
-      <button onClick={() => dispatch({ type: 'ZERO' })}>zero</button>
+    <div>
+      <div> Count:
+        {store.getState()}
+      </div>
+      <button 
+        onClick={e => store.dispatch({ type: 'INCREMENT' })}
+      >
+        plus
+      </button>
+      <button
+        onClick={e => store.dispatch({ type: 'DECREMENT' })}
+      >
+        minus
+      </button>
+      <button 
+        onClick={e => store.dispatch({ type: 'ZERO' })}
+      >
+        zero
+      </button>
     </div>
-  );
-};
+  )
+}
 
 export default App;
