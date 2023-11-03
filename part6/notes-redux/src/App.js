@@ -1,12 +1,16 @@
-import './App.css';
-import { createStore } from 'redux'
+import "./App.css";
+import NewNote from "./components/newNote";
+import Notes from "./components/Notes";
 
-function App() {
+const App = () => {
+  
   return (
-    <div className="App">
-
+    <div>
+      <h1>Notes</h1>
+      <NewNote />
+      <Notes />
     </div>
   );
-}
+};
 
 export default App;
