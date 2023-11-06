@@ -1,5 +1,3 @@
-
-
 const filterReducer = (state = 'ALL', action) => {
     switch (action.type) {
       case 'SET_FILTER':
@@ -15,4 +13,4 @@ const filterReducer = (state = 'ALL', action) => {
     }
   }
   
-  export default filterReducer
+export default filterReducer

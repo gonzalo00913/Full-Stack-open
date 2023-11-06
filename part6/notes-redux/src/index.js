@@ -12,15 +12,12 @@ const reducer = combineReducers({
   filter: filterReducer
 })
 
-const store = createStore(noteReducer);
+const store = createStore(reducer);
 console.log(store.getState())
 
 ReactDOM.render(
-  /*
   <Provider store={store}>
     <App />
   </Provider>,
-  */
-  <div />,
   document.getElementById('root')
 )
