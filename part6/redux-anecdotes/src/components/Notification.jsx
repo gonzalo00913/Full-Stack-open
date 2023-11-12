@@ -29,7 +29,6 @@ const Notification = () => {
   return (
     <div style={style}>
      <p>{notification}</p> 
-     <button onClick={clearNotificationClick}>Cerrar</button>
     </div>
   )
 }
