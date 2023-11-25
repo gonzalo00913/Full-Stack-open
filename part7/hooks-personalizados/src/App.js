@@ -1,4 +1,4 @@
-import useCounter from "./hooks";
+import useCounter from "./hooks/hooks";
 
 function App() {
   const counterHook = useCounter();
