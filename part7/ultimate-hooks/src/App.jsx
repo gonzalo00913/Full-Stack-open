@@ -15,6 +15,7 @@ const useField = (type) => {
   }
 }
 
+// Hook 
 const useResource = (baseUrl) => {
   const [resources, setResources] = useState([])
 
@@ -41,6 +42,8 @@ const useResource = (baseUrl) => {
  
   return [resources, { getAll, create }];
 }
+
+//
 
 const App = () => {
   const content = useField('text')
