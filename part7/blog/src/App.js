@@ -8,18 +8,24 @@ import Togglable from "./components/Togglable";
 import LoginForm from "./components/LoginForm";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import { initializeBlog } from "./reducers/blogSlice";
 
 function App() {
   const [errorMessage, setErrorMessage] = useState(null);
-  const [blogs, setBlogs] = useState([]);
+/*   const [blogs, setBlogs] = useState([]); */
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
 
-  useEffect(() => {
+/*   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
+ */
+
+  useEffect(() =>{
+    dispatch(initializeBlog())
+  },[dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser");
@@ -30,7 +36,7 @@ function App() {
     }
   }, []);
 
-  const addBlog = (blogObject) => {
+/*   const addBlog = (blogObject) => {
     blogService
       .create(blogObject)
       .then((returnedBlog) => {
@@ -43,7 +49,7 @@ function App() {
           setErrorMessage(null);
         }, 5000);
       });
-  };
+  }; */
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -70,20 +76,20 @@ function App() {
     showNotification("Logged out successfully");
   };
 
-  const handleLike = async (blog) => {
+/*  const handleLike = async (blog) => {
     const updatedLikes = blog.likes + 1;
     try {
       const updatedBlog = await blogService.updateLikes(blog.id, updatedLikes);
      
-      setBlogs((prevBlogs) =>
+       setBlogs((prevBlogs) =>
         prevBlogs.map((b) => (b.id === updatedBlog.id ? updatedBlog : b))
       );
     } catch (error) {
       console.error("Error al actualizar los likes:", error);
     }
-  };
+  }; */
 
-  const handleDeleteBlog = async (blogToDelete) => {
+  /* const handleDeleteBlog = async (blogToDelete) => {
     if (window.confirm(`Do you really want to remove the blog "${blogToDelete.title}"?`)) {
       console.log("que ondaaa", blogToDelete.title);
       try {
@@ -100,11 +106,11 @@ function App() {
         }, 5000);
       }
     }
-  };
+  }; */
   
 
-  const sortedBlogs = [...blogs];
-  sortedBlogs.sort((a, b) => b.likes - a.likes);
+/*   const sortedBlogs = [...blogs];
+  sortedBlogs.sort((a, b) => b.likes - a.likes); */
   
 
   const showNotification = (message) => {
@@ -124,12 +130,12 @@ function App() {
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>Logout</button>
           <Togglable buttonLabel="new blog">
-            <BlogForm createBlog={addBlog} />
+            <BlogForm /* createBlog={addBlog}  *//>
           </Togglable>
-
-          {sortedBlogs.map((blog) => (
+           <Blog/>
+   {/*   {     {sortedBlogs.map((blog) => (
             <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDeleteBlog={() => handleDeleteBlog(blog)}/>
-          ))}
+          ))}} */}
         </div>
       ) : (
         <div>
