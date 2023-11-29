@@ -1,66 +1,48 @@
 import React from "react";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createBlog } from "../reducers/blogSlice";
 
-const BlogForm = ({ createBlog }) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
-  const [likes, setLikes] = useState(0);
+const BlogForm = () => {
+  const dispatch = useDispatch();
 
   const addBlog = (event) => {
     event.preventDefault();
-    createBlog({
-      title: title,
-      author: author,
-      url: url,
-      likes: likes,
-    });
-    setTitle("");
-    setAuthor("");
-    setUrl("");
-    setLikes(0);
-    /* showNotification(`New blog added: ${returnedBlog.title}`); */
+    const title = event.target.title.value;
+    const author = event.target.author.value;
+    const url = event.target.url.value;
+    const likes = event.target.likes.value;
+
+    event.target.title.value = '';
+    event.target.author.value = '';
+    event.target.url.value = '';
+    event.target.likes.value = '';
+    dispatch(createBlog({ title, author, url, likes }));
   };
 
   return (
     <div>
-      <form className="blog-form" onSubmit={addBlog}>
+      <form onSubmit={addBlog}>
         <div>
           Title:
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+          <input name="title" />
         </div>
         <div>
           Author:
-          <input
-            type="text"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          <input name="author" />
         </div>
         <div>
-          Url:
-          <input
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
+          URL:
+          <input name="url" />
         </div>
         <div>
           Likes:
-          <input
-            type="text"
-            value={likes}
-            onChange={(e) => setLikes(e.target.value)}
-          />
+          <input name="likes" />
         </div>
-        <button type="submit">Save</button>
+        <button type="submit">Add</button>
       </form>
     </div>
   );
 };
 
 export default BlogForm;
+
