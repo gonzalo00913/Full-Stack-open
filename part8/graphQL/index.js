@@ -24,6 +24,12 @@ let persons = [
     city: "Helsinki",
     id: '3d599471-3436-11e9-bc57-8b80ba54c431'
   },
+  {
+    name: "Gonzalo Masa",
+    street: "Betinotti",
+    city: "Ensenada",
+    id: '3d599471-3436-11e9-bc57-8b80ba54c432'
+  },
 ]
 
 const typeDefs = `
